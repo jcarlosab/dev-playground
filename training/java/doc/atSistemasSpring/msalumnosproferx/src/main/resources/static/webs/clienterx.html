@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CLIENTE REACTIVO ALUMNOS</title>
+</head>
+<body>
+<div id="resultado"></div>
+<script type="text/javascript">
+    var source = new EventSource("../alumno/flujo")
+    source.addEventListener('message', function(e) {
+    	console.log("RECIBIENDO " + e.data);
+        document.getElementById("resultado").innerHTML += e.data + "<br>"
+    }, false);
+
+    source.addEventListener('open', function(e) {
+        console.log("INICIO");
+    }, false);
+
+    source.addEventListener('error', function(e) {
+        if (e.readyState == EventSource.CLOSED) {
+            console.log("close");
+        }
+    }, false);
+    
+    function pararSubscripcion ()
+    {
+    	source.close();
+    }
+</script>
+<button onclick="pararSubscripcion()">PARA</button>
+</body>
+</html>
